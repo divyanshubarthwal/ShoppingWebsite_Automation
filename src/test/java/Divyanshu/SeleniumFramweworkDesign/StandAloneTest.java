@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -23,7 +24,7 @@ public class StandAloneTest {
 	driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 	
 	
-	
+	String productname="ZARA COAT 3";
 	driver.get("https://rahulshettyacademy.com/client");
 	driver.manage().window().maximize();
 	driver.findElement(By.id("userEmail")).sendKeys("D@gmail.com");
@@ -36,13 +37,22 @@ public class StandAloneTest {
 	//System.out.print(products.size());
 	
 	WebElement prod=products.stream().filter(product->product.findElement(By.cssSelector("b")).getText()
-			.equals("ZARA COAT 3")).findFirst().orElse(null);
+			.equals(productname)).findFirst().orElse(null);
 	prod.findElement(By.xpath("/html/body/app-root/app-dashboard/section[2]/div[1]/div[2]/div[1]/div/div/button[2]")).click();
 	
-
+Thread.sleep(2000);
 	wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".toast-container")));
-	wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".ng-animating")));
-
+	//ng-animating
+	wait.until(ExpectedConditions.invisibilityOf(driver.findElement(By.cssSelector(".ng-animating"))));
+	Thread.sleep(2000);
+	driver.findElement(By.cssSelector("[routerlink=\"/dashboard/cart\"]")).click();
+	Thread.sleep(2000);
+	
+	List<WebElement> cartproducts =driver.findElements(By.cssSelector("//*[@class='cartSection']/h3"));
+	Boolean match=cartproducts.stream().anyMatch(cartproduct->cartproduct.getText().equalsIgnoreCase(productname));
+			
+	Assert.assertTrue(match);
+	
 	driver.quit();
 
 	}
