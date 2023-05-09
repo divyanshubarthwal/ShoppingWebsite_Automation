@@ -21,7 +21,7 @@ public class StandAloneTest {
 	WebDriver driver=new ChromeDriver();
 	
 	
-	driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 	
 	
 	String productname="ZARA COAT 3";
