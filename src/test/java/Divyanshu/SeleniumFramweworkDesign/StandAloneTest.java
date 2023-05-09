@@ -53,7 +53,7 @@ Thread.sleep(2000);
 			
 	Assert.assertTrue(match);
 	
-	driver.quit();
+	driver.close();
 
 	}
 
