@@ -13,6 +13,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import SeleniumFrameworkDesign.Pageobject.LandingPage;
+
 
 
 public class StandAloneTest {
@@ -30,6 +32,7 @@ public class StandAloneTest {
 	driver.manage().window().maximize();
 	driver.findElement(By.id("userEmail")).sendKeys("D@gmail.com");
 	driver.findElement(By.id("userPassword")).sendKeys("Dd@123456");
+	LandingPage landingPage=new LandingPage(driver);
 	
 	driver.findElement(By.id("login")).click();
 	WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(5));
