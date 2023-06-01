@@ -15,10 +15,10 @@ import org.testng.Assert;
 
 import AbstractComponents.AbstractComponent;
 import SeleniumFrameworkDesign.Pageobject.CartPage;
+import SeleniumFrameworkDesign.Pageobject.CheckoutPage;
+import SeleniumFrameworkDesign.Pageobject.ConfirmationPage;
 import SeleniumFrameworkDesign.Pageobject.LandingPage;
 import SeleniumFrameworkDesign.Pageobject.ProductCatalogue;
-
-
 
 public class SubmitOrderTest extends AbstractComponent {
 
@@ -27,48 +27,39 @@ public class SubmitOrderTest extends AbstractComponent {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static void main(String[] args) throws InterruptedException  {
-	
-	WebDriver driver=new ChromeDriver();
-	
-	
-	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-	
-	
-	String productName="ZARA COAT 3";
-	
-	driver.manage().window().maximize();
-	
-	LandingPage landingPage=new LandingPage(driver);
-	landingPage.goTo();
-	//landingPage.loginApplication("D@gmail.com","Dd@123456");
-	ProductCatalogue productCatalogue=landingPage.loginApplication("D@gmail.com","Dd@123456");
-	
-	List<WebElement>products=productCatalogue.getProductList();
-	productCatalogue.addProductToCart(productName);
-	CartPage cartPage=productCatalogue.goToCartPage();
-	
-	Boolean match=cartPage.VerifyProductDisplay(productName);
-	//System.out.print(products.size());
-	//validation cannot go in Page object file
+	public static void main(String[] args) throws InterruptedException {
 
-	Assert.assertTrue(match);
-	cartPage.goToCheckout();
-	
-	
-	driver.findElement(By.xpath("(//button[@class='btn btn-primary'])[3]")).click();
-	
-	
-	driver.findElement(By.cssSelector(".btnn.action__submit.ng-star-inserted")).click();
-	
-	String Expected=driver.findElement(By.cssSelector(".hero-primary")).getText();
-	
-	
-	Assert.assertTrue(Expected.equalsIgnoreCase("THANKYOU FOR THE ORDER."));
-	
-	
-	
-	driver.quit();
+		WebDriver driver = new ChromeDriver();
+
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+		String productName = "ZARA COAT 3";
+
+		driver.manage().window().maximize();
+
+		LandingPage landingPage = new LandingPage(driver);
+		landingPage.goTo();
+		// landingPage.loginApplication("D@gmail.com","Dd@123456");
+		ProductCatalogue productCatalogue = landingPage.loginApplication("D@gmail.com", "Dd@123456");
+
+		List<WebElement> products = productCatalogue.getProductList();
+		productCatalogue.addProductToCart(productName);
+		CartPage cartPage = productCatalogue.goToCartPage();
+
+		Boolean match = cartPage.VerifyProductDisplay(productName);
+		// System.out.print(products.size());
+		// validation cannot go in Page object file
+
+		Assert.assertTrue(match);
+		CheckoutPage checkoutPage = cartPage.goToCheckout();
+		checkoutPage.selectCountry("India");
+		ConfirmationPage confirmationPage = checkoutPage.submitOrder();
+
+		String confirmMessage = confirmationPage.getConfirmationMessage();
+
+		Assert.assertTrue(confirmMessage.equalsIgnoreCase("THANKYOU FOR THE ORDER."));
+
+		driver.quit();
 
 	}
 

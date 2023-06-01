@@ -38,4 +38,10 @@ WebDriver driver;
 		
 	}
 	
+	public ConfirmationPage submitOrder() {
+		submit.click();
+		return new ConfirmationPage(driver);
+		
+	}
+	
 }

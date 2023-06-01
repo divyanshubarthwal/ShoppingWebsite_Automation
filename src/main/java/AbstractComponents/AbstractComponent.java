@@ -23,7 +23,7 @@ public class AbstractComponent {
 	WebElement cartHeader;
 	
 	public void waitForElementToAppear(By findBy) {
-	WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(5));
+	WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(10));
 	wait.until(ExpectedConditions.invisibilityOfElementLocated(findBy));
 	//List<WebElement> products=driver.findElements(By.cssSelector(".mb-3"));
 }
